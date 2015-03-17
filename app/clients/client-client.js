@@ -2,8 +2,10 @@
 
 var bo = require('bograch');
 
-var client = bo.client('amqp');
+var client = bo.client('amqp', {
+  name: 'client'
+});
 
-exports.sendMail = function (params, cb) {
-  client.call('client.getById', params, cb);
-};
+client.register('getById');
+
+module.exports = client;

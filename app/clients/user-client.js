@@ -2,12 +2,10 @@
 
 var bo = require('bograch');
 
-var client = bo.client('amqp');
+var client = bo.client('amqp', {
+  name: 'user'
+});
 
-var userClient = {
-  getById: function (id, cb) {
-    client.call('user.getById', { id: id }, cb);
-  }
-};
+client.register('getById');
 
-module.exports = userClient;
+module.exports = client;
