@@ -8,4 +8,4 @@ var client = bo.client('amqp', {
 
 client.register('getById');
 
-module.exports = client;
+module.exports = client.methods;
