@@ -10,8 +10,8 @@ module.exports = function (params, cb) {
     return cb(new Error('userId is missing'));
   }
   
-  if (!params.clienId) {
-    return cb(new Error('clienId is missing'));
+  if (!params.clientId) {
+    return cb(new Error('clientId is missing'));
   }
   
   if (!params.redirectUri) {
@@ -21,7 +21,7 @@ module.exports = function (params, cb) {
   // Create a new authorization code
   var code = new Code({
     value: uid(16),
-    clientId: params.clienId,
+    clientId: params.clientId,
     redirectUri: params.redirectUri,
     userId: params.userId
   });

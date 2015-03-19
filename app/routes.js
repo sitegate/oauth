@@ -8,6 +8,7 @@ module.exports = function (server) {
   server.addMethods({
     exchange: exchange,
     createCode: createCode,
-    authToken: authToken
+    authToken: authToken,
+    isTrusted: require('./is-trusted')
   });
 };

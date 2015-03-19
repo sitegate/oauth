@@ -12,9 +12,9 @@
   "author": "Zoltan Kochan",
   "license": "MIT",
   "dependencies": {
-    "bograch": "0.0.7",
+    "bograch": "0.0.8",
     "lodash": "~3.5.0",
-    "bograch-amqp": "0.0.4",
+    "bograch-amqp": "0.0.5",
     "mongoose": "~3.8.25"
   }
 }

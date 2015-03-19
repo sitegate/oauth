@@ -1,7 +1,7 @@
 'use strict';
 
 var Code = require('../models/code');
-var Token = require('../models/code');
+var Token = require('../models/token');
 var uid = require('./helpers/uid');
 
 module.exports = function (params, cb) {
@@ -11,8 +11,8 @@ module.exports = function (params, cb) {
     return cb(new Error('code is missing'));
   }
   
-  if (!params.clienId) {
-    return cb(new Error('clienId is missing'));
+  if (!params.clientId) {
+    return cb(new Error('clientId is missing'));
   }
   
   if (!params.redirectUri) {
