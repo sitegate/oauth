@@ -25,7 +25,7 @@ module.exports = function (params, cb) {
     if (err) {
       return cb(err);
     }
-    if (authCode === undefined) {
+    if (!authCode) {
       return cb(null, false);
     }
     if (params.clientId !== authCode.clientId) {
