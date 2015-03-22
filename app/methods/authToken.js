@@ -1,8 +1,8 @@
 'use strict';
 
-var Token = require('../models/token');
-var userClient = require('./clients/user-client');
-var clientClient = require('./clients/client-client');
+var Token = require('../../models/token');
+var User = require('../clients/user');
+var Client = require('../clients/client');
 
 module.exports = function (params, cb) {
   Token.findOne({
@@ -21,7 +21,7 @@ module.exports = function (params, cb) {
       return;
     }
     if (token.userID !== null) {
-      userClient.getById({
+      User.getById({
         id: token.userId
       }, function (err, user) {
         if (err) {
@@ -42,7 +42,7 @@ module.exports = function (params, cb) {
     }
     //The request came from a client only since userID is null
     //therefore the client is passed back instead of a user
-    clientClient.getById({
+    Client.getById({
       id: token.clientId
     }, function (err, client) {
       if (err) {

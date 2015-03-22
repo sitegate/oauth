@@ -1,8 +1,8 @@
 'use strict';
 
 var ServerError = require('bograch').ServerError;
-var clientClient = require('./clients/client-client');
-var userClient = require('./clients/user-client');
+var Client = require('../clients/client');
+var User = require('../clients/user');
 
 module.exports = function (params, cb) {
   params = params || {};
@@ -14,7 +14,7 @@ module.exports = function (params, cb) {
     return cb(new ServerError('missingParam', 'userId is missing'));
   }
   
-  clientClient.getById({
+  Client.getById({
     id: params.clientId
   }, function (err, client) {
     if (err) {
@@ -25,6 +25,6 @@ module.exports = function (params, cb) {
       return cb(null, true);
     }
     
-    userClient.trustsClient(params, cb);
+    User.trustsClient(params, cb);
   });
 };

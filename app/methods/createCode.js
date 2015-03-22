@@ -1,7 +1,7 @@
 'use strict';
 
-var Code = require('../models/code');
-var uid = require('./helpers/uid');
+var Code = require('../../models/code');
+var uid = require('../helpers/uid');
 
 module.exports = function (params, cb) {
   params = params || {};

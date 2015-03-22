@@ -1,14 +1,13 @@
 'use strict';
 
-var exchange = require('./exchange');
-var createCode = require('./create-code');
-var authToken = require('./auth-token');
+var fs = require('fs');
 
 module.exports = function (server) {
-  server.addMethods({
-    exchange: exchange,
-    createCode: createCode,
-    authToken: authToken,
-    isTrusted: require('./is-trusted')
+  var methods = fs.readdirSync('./app/methods/');
+  
+  var scope = {};
+  methods.forEach(function (method) {
+    scope[method.replace('.js', '')] = require('./methods/' + method);
   });
+  server.addMethods(scope);
 };
