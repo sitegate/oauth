@@ -14,9 +14,7 @@ module.exports = function (params, cb) {
     return cb(new ServerError('missingParam', 'userId is missing'));
   }
   
-  Client.getById({
-    id: params.clientId
-  }, function (err, client) {
+  Client.getById(params.clientId, function (err, client) {
     if (err) {
       return cb(err, null);
     }

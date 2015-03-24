@@ -21,9 +21,7 @@ module.exports = function (params, cb) {
       return;
     }
     if (token.userID !== null) {
-      User.getById({
-        id: token.userId
-      }, function (err, user) {
+      User.getById(token.userId, function (err, user) {
         if (err) {
           return cb(err);
         }
@@ -42,9 +40,7 @@ module.exports = function (params, cb) {
     }
     //The request came from a client only since userID is null
     //therefore the client is passed back instead of a user
-    Client.getById({
-      id: token.clientId
-    }, function (err, client) {
+    Client.getById(token.clientId, function (err, client) {
       if (err) {
         return cb(err);
       }
