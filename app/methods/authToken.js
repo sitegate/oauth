@@ -4,9 +4,9 @@ var Token = require('../../models/token');
 var User = require('../clients/user');
 var Client = require('../clients/client');
 
-module.exports = function (params, cb) {
+module.exports = function (accessToken, cb) {
   Token.findOne({
-    value: params.accessToken
+    value: accessToken
   }, function (err, token) {
     if (err) {
       return cb(err);
@@ -15,7 +15,7 @@ module.exports = function (params, cb) {
       return cb(null, false);
     }
     if (new Date() > token.expirationDate) {
-      Token.delete(params.accessToken, function (err) {
+      Token.delete(accessToken, function (err) {
         return cb(err);
       });
       return;
