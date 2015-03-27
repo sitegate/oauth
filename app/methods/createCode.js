@@ -1,7 +1,7 @@
 'use strict';
 
 var Code = require('../../models/code');
-var uid = require('../helpers/uid');
+var uid = require('rand-token').uid;
 
 module.exports = function (params, cb) {
   params = params || {};

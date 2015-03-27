@@ -12,6 +12,7 @@
     "bograch": "0.0.10",
     "bograch-amqp": "0.0.5",
     "lodash": "~3.5.0",
-    "mongoose": "~3.8.25"
+    "mongoose": "~3.8.25",
+    "rand-token": "^0.2.1"
   }
 }
