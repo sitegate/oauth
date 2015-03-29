@@ -7,11 +7,15 @@
     "sitegate"
   ],
   "author": "Zoltan Kochan",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zkochan/sitegate-oauth.git"
+  },
   "license": "MIT",
   "dependencies": {
     "bograch": "0.0.10",
     "bograch-amqp": "0.0.5",
-    "lodash": "~3.5.0",
+    "convict": "^0.6.1",
     "mongoose": "~3.8.25",
     "rand-token": "^0.2.1"
   }
