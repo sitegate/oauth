@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/zkochan/sitegate-oauth.git"
+    "url": "git://github.com/sitegate/oauth.git"
   },
   "license": "MIT",
   "dependencies": {
