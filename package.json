@@ -6,7 +6,11 @@
   "keywords": [
     "sitegate"
   ],
-  "author": "Zoltan Kochan",
+  "author": {
+    "name": "Zoltan Kochan",
+    "email": "zoltan.kochan@gmail.com",
+    "url": "http://kochan.io"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/zkochan/sitegate-oauth.git"
