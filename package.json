@@ -2,7 +2,7 @@
   "name": "sitegate-oauth",
   "version": "0.0.0",
   "description": "An OAuth security microservice for SiteGate",
-  "main": "app.js",
+  "main": "./lib/index.js",
   "keywords": [
     "sitegate"
   ],
@@ -17,9 +17,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "convict": "^1.0.1",
     "mongoose": "^4.1.6",
-    "rand-token": "^0.2.1",
-    "uva-amqp": "^0.4.0"
+    "rand-token": "^0.2.1"
   }
 }

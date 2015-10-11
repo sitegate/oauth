@@ -1,37 +1,40 @@
 'use strict';
 
-var Code = require('../../models/code');
 var uid = require('rand-token').uid;
 
-module.exports = function (params, cb) {
-  params = params || {};
-  
-  if (!params.userId) {
-    return cb(new Error('userId is missing'));
-  }
-  
-  if (!params.clientId) {
-    return cb(new Error('clientId is missing'));
-  }
-  
-  if (!params.redirectUri) {
-    return cb(new Error('redirectUri is missing'));
-  }
-  
-  // Create a new authorization code
-  var code = new Code({
-    value: uid(16),
-    clientId: params.clientId,
-    redirectUri: params.redirectUri,
-    userId: params.userId
-  });
+module.exports = function(ms) {
+  var Code = ms.models.Code;
 
-  // Save the auth code and check for errors
-  code.save(function (err) {
-    if (err) {
-      return cb(err);
+  return function(params, cb) {
+    params = params || {};
+
+    if (!params.userId) {
+      return cb(new Error('userId is missing'));
     }
 
-    cb(null, code.value);
-  });
+    if (!params.clientId) {
+      return cb(new Error('clientId is missing'));
+    }
+
+    if (!params.redirectUri) {
+      return cb(new Error('redirectUri is missing'));
+    }
+
+    // Create a new authorization code
+    var code = new Code({
+      value: uid(16),
+      clientId: params.clientId,
+      redirectUri: params.redirectUri,
+      userId: params.userId
+    });
+
+    // Save the auth code and check for errors
+    code.save(function(err) {
+      if (err) {
+        return cb(err);
+      }
+
+      cb(null, code.value);
+    });
+  };
 };

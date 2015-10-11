@@ -22,4 +22,6 @@ var CodeSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('Code', CodeSchema);
+module.exports = function(connection) {
+  return connection.model('Code', CodeSchema);
+};

@@ -19,5 +19,6 @@ var TokenSchema = new Schema({
   }
 });
 
-// Export the Mongoose model
-module.exports = mongoose.model('Token', TokenSchema);
+module.exports = function(connection) {
+  return connection.model('Token', TokenSchema);
+};
