@@ -1,40 +1,40 @@
-'use strict';
+'use strict'
+const uid = require('rand-token').uid
+const joi = require('joi')
 
-var uid = require('rand-token').uid;
+module.exports = function(ms, opts, next) {
+  let Code = ms.plugins.models.Code
 
-module.exports = function(ms) {
-  var Code = ms.models.Code;
+  ms.method({
+    name: 'createCode',
+    config: {
+      validate: {
+        userId: joi.string().required(),
+        clientId: joi.string().required(),
+        redirectUri: joi.string().required(),
+      },
+    },
+    handler(params, cb) {
+      // Create a new authorization code
+      let code = new Code({
+        value: uid(16),
+        clientId: params.clientId,
+        redirectUri: params.redirectUri,
+        userId: params.userId,
+      })
 
-  return function(params, cb) {
-    params = params || {};
+      // Save the auth code and check for errors
+      code.save(function(err) {
+        if (err) return cb(err)
 
-    if (!params.userId) {
-      return cb(new Error('userId is missing'));
-    }
+        cb(null, code.value)
+      })
+    },
+  })
 
-    if (!params.clientId) {
-      return cb(new Error('clientId is missing'));
-    }
+  next()
+}
 
-    if (!params.redirectUri) {
-      return cb(new Error('redirectUri is missing'));
-    }
-
-    // Create a new authorization code
-    var code = new Code({
-      value: uid(16),
-      clientId: params.clientId,
-      redirectUri: params.redirectUri,
-      userId: params.userId
-    });
-
-    // Save the auth code and check for errors
-    code.save(function(err) {
-      if (err) {
-        return cb(err);
-      }
-
-      cb(null, code.value);
-    });
-  };
-};
+module.exports.attributes = {
+  name: 'create-code',
+}

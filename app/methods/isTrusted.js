@@ -1,29 +1,32 @@
-'use strict';
+'use strict'
+const joi = require('joi')
 
-module.exports = function(ms) {
-  var client = ms.clients.client;
-  var user = ms.clients.user;
+module.exports = function(ms, opts, next) {
+  let client = ms.plugins['jimbo-client'].client
+  let user = ms.plugins['jimbo-client'].user
 
-  return function(params, cb) {
-    params = params || {};
+  ms.method({
+    name: 'isTrusted',
+    config: {
+      validate: {
+        clientId: joi.string().required(),
+        userId: joi.string().required(),
+      },
+    },
+    handler(params, cb) {
+      client.getById(params.clientId, function(err, client) {
+        if (err) return cb(err, null)
 
-    if (!params.clientId) {
-      return cb(new Error('clientId is missing'));
-    }
-    if (!params.userId) {
-      return cb(new Error('userId is missing'));
-    }
+        if (client.trusted) return cb(null, true)
 
-    client.getById(params.clientId, function(err, client) {
-      if (err) {
-        return cb(err, null);
-      }
+        user.trustsClient(params, cb)
+      })
+    },
+  })
 
-      if (client.trusted) {
-        return cb(null, true);
-      }
+  next()
+}
 
-      user.trustsClient(params, cb);
-    });
-  };
-};
+module.exports.attributes = {
+  name: 'is-trusted',
+}

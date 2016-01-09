@@ -1,24 +1,23 @@
-'use strict';
-
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+'use strict'
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 // Define our token schema
-var TokenSchema = new Schema({
+let TokenSchema = new Schema({
   value: {
     type: String,
-    required: true
+    required: true,
   },
   userId: {
     type: String,
-    required: true
+    required: true,
   },
   clientId: {
     type: String,
-    required: true
-  }
-});
+    required: true,
+  },
+})
 
 module.exports = function(connection) {
-  return connection.model('Token', TokenSchema);
-};
+  return connection.model('Token', TokenSchema)
+}

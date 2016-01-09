@@ -1,27 +1,26 @@
-'use strict';
+'use strict'
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-
-var CodeSchema = new Schema({
+let CodeSchema = new Schema({
   value: {
     type: String,
-    required: true
+    required: true,
   },
   redirectUri: {
     type: String,
-    required: true
+    required: true,
   },
   userId: {
     type: String,
-    required: true
+    required: true,
   },
   clientId: {
     type: String,
-    required: true
-  }
-});
+    required: true,
+  },
+})
 
 module.exports = function(connection) {
-  return connection.model('Code', CodeSchema);
-};
+  return connection.model('Code', CodeSchema)
+}

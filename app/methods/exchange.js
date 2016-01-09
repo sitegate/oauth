@@ -1,64 +1,59 @@
-'use strict';
+'use strict'
+const uid = require('rand-token').uid
+const joi = require('joi')
 
-var uid = require('rand-token').uid;
+module.exports = function(ms, opts, next) {
+  let Code = ms.plugins.models.Code
+  let Token = ms.plugins.models.Token
 
-module.exports = function(ms) {
-  var Code = ms.models.Code;
-  var Token = ms.models.Token;
+  ms.method({
+    name: 'exchange',
+    config: {
+      validate: {
+        code: joi.string().required(),
+        clientId: joi.string().required(),
+        redirectUri: joi.string().required(),
+      },
+    },
+    handler(params, cb) {
+      Code.findOne({
+        value: params.code,
+      }, function(err, authCode) {
+        if (err) return cb(err)
 
-  return function(params, cb) {
-    params = params || {};
+        if (!authCode) return cb(null, false)
 
-    if (!params.code) {
-      return cb(new Error('code is missing'));
-    }
+        if (params.clientId !== authCode.clientId)
+          return cb(null, false)
 
-    if (!params.clientId) {
-      return cb(new Error('clientId is missing'));
-    }
+        if (params.redirectUri !== authCode.redirectUri)
+          return cb(null, false)
 
-    if (!params.redirectUri) {
-      return cb(new Error('redirectUri is missing'));
-    }
+        // Delete auth code now that it has been used
+        authCode.remove(function(err) {
+          if (err) return cb(err)
 
-    Code.findOne({
-      value: params.code
-    }, function(err, authCode) {
-      if (err) {
-        return cb(err);
-      }
-      if (!authCode) {
-        return cb(null, false);
-      }
-      if (params.clientId !== authCode.clientId) {
-        return cb(null, false);
-      }
-      if (params.redirectUri !== authCode.redirectUri) {
-        return cb(null, false);
-      }
+          // Create a new access token
+          let token = new Token({
+            value: uid(256),
+            clientId: authCode.clientId,
+            userId: authCode.userId,
+          })
 
-      // Delete auth code now that it has been used
-      authCode.remove(function(err) {
-        if (err) {
-          return cb(err);
-        }
+          // Save the access token and check for errors
+          token.save(function(err) {
+            if (err) return cb(err)
 
-        // Create a new access token
-        var token = new Token({
-          value: uid(256),
-          clientId: authCode.clientId,
-          userId: authCode.userId
-        });
+            cb(null, token.value)
+          })
+        })
+      })
+    },
+  })
 
-        // Save the access token and check for errors
-        token.save(function(err) {
-          if (err) {
-            return cb(err);
-          }
+  next()
+}
 
-          cb(null, token.value);
-        });
-      });
-    });
-  };
-};
+module.exports.attributes = {
+  name: 'exchange',
+}
