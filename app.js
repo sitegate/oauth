@@ -1,4 +1,5 @@
 'use strict'
+const config = require('./config')
 const Server = require('jimbo').Server
 
 let server = new Server()
@@ -13,7 +14,7 @@ server
     {
       register: require('./models'),
       options: {
-        mongoURI: 'mongodb://localhost:27017/sitegate-oauth',
+        mongoURI: config.get('mongodbURI'),
       },
     },
     {
@@ -22,7 +23,7 @@ server
     {
       register: require('./clients'),
       options: {
-        amqpURL: 'amqp://guest:guest@localhost:5672',
+        amqpURL: config.get('amqpURI'),
       },
     },
     {

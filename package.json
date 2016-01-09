@@ -19,11 +19,13 @@
   },
   "license": "MIT",
   "dependencies": {
+    "convict": "^1.0.2",
     "debug": "^2.2.0",
     "jimbo": "0.0.1",
     "jimbo-client": "0.0.0",
     "joi": "^7.1.0",
     "mongoose": "^4.1.6",
-    "rand-token": "^0.2.1"
+    "rand-token": "^0.2.1",
+    "yaml-or-json": "^0.1.0"
   }
 }
