@@ -27,16 +27,16 @@ server
       },
     },
     {
-      register: require('./app/methods/authToken'),
+      register: require('./app/methods/auth-token'),
     },
     {
-      register: require('./app/methods/createCode'),
+      register: require('./app/methods/create-code'),
     },
     {
       register: require('./app/methods/exchange'),
     },
     {
-      register: require('./app/methods/isTrusted'),
+      register: require('./app/methods/is-trusted'),
     },
   ])
   .then(() => server.start())
