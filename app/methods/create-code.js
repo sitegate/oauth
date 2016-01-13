@@ -2,7 +2,7 @@
 const uid = require('rand-token').uid
 const joi = require('joi')
 
-module.exports = function(ms, opts, next) {
+module.exports = function(ms, opts) {
   let Code = ms.plugins.models.Code
 
   ms.method({
@@ -14,7 +14,7 @@ module.exports = function(ms, opts, next) {
         redirectUri: joi.string().required(),
       },
     },
-    handler(params, cb) {
+    handler(params) {
       // Create a new authorization code
       let code = new Code({
         value: uid(16),
@@ -24,15 +24,9 @@ module.exports = function(ms, opts, next) {
       })
 
       // Save the auth code and check for errors
-      code.save(function(err) {
-        if (err) return cb(err)
-
-        cb(null, code.value)
-      })
+      return code.save().then(code => Promise.resolve(code.value))
     },
   })
-
-  next()
 }
 
 module.exports.attributes = {

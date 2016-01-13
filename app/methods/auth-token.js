@@ -1,7 +1,7 @@
 'use strict'
 const joi = require('joi')
 
-module.exports = function(ms, opts, next) {
+module.exports = function(ms, opts) {
   let Token = ms.plugins.models.Token
   let user = ms.plugins['jimbo-client'].user
   let client = ms.plugins['jimbo-client'].client
@@ -13,55 +13,49 @@ module.exports = function(ms, opts, next) {
         accessToken: joi.string().required(),
       },
     },
-    handler(params, cb) {
-      Token.findOne({
+    handler(params) {
+      return Token.findOne({
         value: params.accessToken,
-      }, function(err, token) {
-        if (err) return cb(err)
+      }).exec()
+        .then(token => {
+          if (!token) return Promise.resolve(false)
 
-        if (!token) return cb(null, false)
+          if (new Date() > token.expirationDate)
+            return Token.delete(params.accessToken)
 
-        if (new Date() > token.expirationDate)
-          return Token.delete(params.accessToken, function(err) {
-            return cb(err)
-          })
+          if (token.userID !== null)
+            return user.getById(token.userId)
+              .then(user => {
+                if (!user) return Promise.resolve(false)
 
-        if (token.userID !== null) {
-          user.getById(token.userId, function(err, user) {
-            if (err) return cb(err)
+                // to keep this example simple, restricted scopes
+                // are not implemented,
+                // and this is just for illustrative purposes
+                let info = {
+                  scope: '*',
+                }
+                return Promise.resolve({
+                  user,
+                  info,
+                })
+              })
 
-            if (!user) return cb(null, false)
+          //The request came from a client only since userID is null
+          //therefore the client is passed back instead of a user
+          return client.getById(token.clientId)
+            .then(client => {
+              if (!client) return Promise.resolve(false)
 
-            // to keep this example simple, restricted scopes
-            // are not implemented,
-            // and this is just for illustrative purposes
-            let info = {
-              scope: '*',
-            }
-            return cb(null, user, info)
-          })
-          return
-        }
-
-        //The request came from a client only since userID is null
-        //therefore the client is passed back instead of a user
-        client.getById(token.clientId, function(err, client) {
-          if (err) return cb(err)
-
-          if (!client) return cb(null, false)
-
-          // to keep this example simple, restricted scopes are not implemented,
-          // and this is just for illustrative purposes
-          let info = {
-            scope: '*',
-          }
-          return cb(null, client, info)
+              // to keep this example simple, restricted scopes are not implemented,
+              // and this is just for illustrative purposes
+              let info = {
+                scope: '*',
+              }
+              return Promise.resolve({client, info})
+            })
         })
-      })
     },
   })
-
-  next()
 }
 
 module.exports.attributes = {

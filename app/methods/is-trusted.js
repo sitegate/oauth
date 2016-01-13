@@ -13,14 +13,14 @@ module.exports = function(ms, opts, next) {
         userId: joi.string().required(),
       },
     },
-    handler(params, cb) {
-      client.getById(params.clientId, function(err, client) {
-        if (err) return cb(err, null)
+    handler(params) {
+      return client.getById(params.clientId).exec()
+        .then(client => {
+          if (client.trusted)
+            return Promise.resolve(true)
 
-        if (client.trusted) return cb(null, true)
-
-        user.trustsClient(params, cb)
-      })
+          return user.trustsClient(params)
+        })
     },
   })
 
