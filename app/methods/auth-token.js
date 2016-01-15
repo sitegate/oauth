@@ -9,9 +9,11 @@ module.exports = function(ms, opts) {
   ms.method({
     name: 'authToken',
     config: {
-      validate: {
+      validate: joi.object().keys({
         accessToken: joi.string().required(),
-      },
+        userId: joi.string(),
+        clientId: joi.string(),
+      }).xor('userId', 'clientId'),
     },
     handler(params) {
       return Token.findOne({
@@ -23,7 +25,7 @@ module.exports = function(ms, opts) {
           if (new Date() > token.expirationDate)
             return Token.delete(params.accessToken)
 
-          if (token.userID !== null)
+          if (token.userId !== null)
             return user.getById(token.userId)
               .then(user => {
                 if (!user) return Promise.resolve(false)

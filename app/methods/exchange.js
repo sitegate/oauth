@@ -2,7 +2,7 @@
 const uid = require('rand-token').uid
 const joi = require('joi')
 
-module.exports = function(ms, opts, next) {
+module.exports = function(ms, opts) {
   let Code = ms.plugins.models.Code
   let Token = ms.plugins.models.Token
 
@@ -45,8 +45,6 @@ module.exports = function(ms, opts, next) {
         })
     },
   })
-
-  next()
 }
 
 module.exports.attributes = {

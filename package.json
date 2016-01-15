@@ -33,8 +33,12 @@
   },
   "devDependencies": {
     "chai": "^3.4.1",
+    "chai-as-promised": "^5.2.0",
     "coveralls": "^2.11.6",
+    "env-test": "^1.0.0",
     "istanbul": "^0.4.2",
-    "mocha": "^2.3.4"
+    "mocha": "^2.3.4",
+    "mocha-mongoose": "^1.1.1",
+    "plugiator": "^0.1.1"
   }
 }
