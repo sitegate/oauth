@@ -1,12 +1,12 @@
 'use strict'
-module.exports = function(service, opts, next) {
+module.exports = function(service, opts) {
   if (!opts.amqpURL)
-    return next(new Error('amqpURL is required'))
+    throw new Error('amqpURL is required')
 
-  service.client({
+  return service.client({
     name: 'user',
     channel: 'sitegate-user',
-    url: opts.amqpURL,
+    amqpURL: opts.amqpURL,
     methods: [
       'authenticate',
       'changePassword',
@@ -29,23 +29,22 @@ module.exports = function(service, opts, next) {
       'verifyEmailByToken',
     ],
   })
-
-  service.client({
-    name: 'client',
-    channel: 'sitegate-client',
-    url: opts.amqpURL,
-    methods: [
-      'create',
-      'getById',
-      'getById',
-      'getByPublicId',
-      'query',
-      'remove',
-      'update',
-    ],
-  })
-
-  next()
+  .then(() =>
+    service.client({
+      name: 'client',
+      channel: 'sitegate-client',
+      amqpURL: opts.amqpURL,
+      methods: [
+        'create',
+        'getById',
+        'getById',
+        'getByPublicId',
+        'query',
+        'remove',
+        'update',
+      ],
+    })
+  )
 }
 
 module.exports.attributes = {

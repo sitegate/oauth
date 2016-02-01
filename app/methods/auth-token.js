@@ -3,8 +3,8 @@ const joi = require('joi')
 
 module.exports = function(ms, opts) {
   let Token = ms.plugins.models.Token
-  let user = ms.plugins['jimbo-client'].user
-  let client = ms.plugins['jimbo-client'].client
+  let user = ms.plugins.jimboClient.user
+  let client = ms.plugins.jimboClient.client
 
   ms.method({
     name: 'authToken',

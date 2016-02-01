@@ -1,12 +1,12 @@
 'use strict'
 const config = require('./config')
-const Server = require('jimbo').Server
+const jimbo = require('jimbo')
 
-let server = new Server()
+let server = jimbo()
 
 server.connection({
   channel: 'sitegate-oauth',
-  url: 'amqp://guest:guest@localhost:5672',
+  amqpURL: 'amqp://guest:guest@localhost:5672',
 })
 
 server

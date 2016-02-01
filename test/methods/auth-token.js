@@ -14,27 +14,29 @@ const clearDB = require('mocha-mongoose')(config.get('mongodbURI'))
 chai.use(chaiAsPromised)
 
 describe('authToken', function() {
-  beforeEach(clearDB)
-  beforeEach(function(next) {
-    this._server = new jimbo.Server()
+  let server
 
-    this._server.register([
+  beforeEach(clearDB)
+  beforeEach(function() {
+    server = jimbo()
+
+    return server.register([
       {
         register: modelsPlugin,
         options: {
           mongoURI: config.get('mongodbURI'),
         },
       },
-    ], err => next(err))
+    ])
   })
 
-  it('should register client', function() {
+  it('should return access token', function() {
     let userId = '507f191e810c19729de860ea'
     let clientId = '666f191e810c19729de860ea'
     let redirectUri = 'http://foo.com/callback'
     let code
     let token
-    return this._server
+    return server
       .register([
         {
           register: createCode,
@@ -77,7 +79,7 @@ describe('authToken', function() {
           register: authToken,
         },
       ])
-      .then(() => this._server.methods.authToken({
+      .then(() => server.methods.authToken({
           userId,
           accessToken: token,
         }))
